@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Logistiq Pulse Calculator</title>
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family: Arial, sans-serif;
+      background:#f3f6fa;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:20px;
+    }
+
+    .app-container{
+      width:100%;
+      max-width:480px;
+      background:white;
+      border-radius:20px;
+      overflow:hidden;
+      box-shadow:0 8px 30px rgba(0,0,0,0.12);
+    }
+
+    .header{
+      background:linear-gradient(135deg,#003B7A,#0066CC);
+      padding:30px 20px;
+      text-align:center;
+    }
+
+    .logo{
+  width:260px;
+  max-width:100%;
+  margin-bottom:18px;
+  object-fit:contain;
+}
+
+    .title{
+      color:white;
+      font-size:28px;
+      font-weight:bold;
+      margin-bottom:5px;
+    }
+
+    .subtitle{
+      color:#dbeafe;
+      font-size:14px;
+    }
+
+    .content{
+      padding:28px;
+    }
+
+    .input-group{
+      margin-bottom:20px;
+    }
+
+    label{
+      display:block;
+      margin-bottom:8px;
+      font-weight:600;
+      color:#1f2937;
+      font-size:15px;
+    }
+
+    input{
+      width:100%;
+      padding:14px;
+      border:2px solid #d1d5db;
+      border-radius:12px;
+      font-size:16px;
+      transition:0.2s;
+    }
+
+    input:focus{
+      outline:none;
+      border-color:#0066CC;
+      box-shadow:0 0 0 4px rgba(0,102,204,0.15);
+    }
+
+    .calculate-btn{
+      width:100%;
+      background:linear-gradient(135deg,#78BE20,#4CAF50);
+      color:white;
+      border:none;
+      padding:16px;
+      border-radius:14px;
+      font-size:18px;
+      font-weight:bold;
+      cursor:pointer;
+      transition:0.2s;
+      margin-top:10px;
+    }
+
+    .calculate-btn:hover{
+      transform:translateY(-2px);
+      box-shadow:0 6px 20px rgba(120,190,32,0.25);
+    }
+
+    .results{
+      margin-top:28px;
+      background:#f8fafc;
+      border-radius:16px;
+      padding:24px;
+      border:1px solid #e5e7eb;
+    }
+
+    .results-title{
+      font-size:20px;
+      font-weight:bold;
+      color:#003B7A;
+      margin-bottom:18px;
+      text-align:center;
+    }
+
+    .result-box{
+      background:white;
+      border-radius:12px;
+      padding:18px;
+      margin-bottom:14px;
+      border-left:6px solid #78BE20;
+      box-shadow:0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .result-label{
+      color:#6b7280;
+      font-size:14px;
+      margin-bottom:4px;
+    }
+
+    .result-value{
+      font-size:28px;
+      font-weight:bold;
+      color:#003B7A;
+    }
+
+    .footer{
+      text-align:center;
+      padding:18px;
+      color:#6b7280;
+      font-size:12px;
+      border-top:1px solid #e5e7eb;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="app-container">
+
+  <div class="header">
+
+    <!-- Replace src with your logo path -->
+    <img 
+      src="Logistiq.png" 
+      class="logo"
+      alt="Logistiq Logo"
+    >
+
+    <div class="title">
+      Pulse Calculator
+    </div>
+
+    <div class="subtitle">
+      Conveyor Pulse & Length Calculation Tool
+    </div>
+
+  </div>
+
+  <div class="content">
+
+    <div class="input-group">
+      <label>Enter Idle Length (Inches)</label>
+      <input type="number" id="idle" value="31">
+    </div>
+
+    <div class="input-group">
+      <label>Enter Drive Length (Inches)</label>
+      <input type="number" id="drive" value="20">
+    </div>
+
+    <div class="input-group">
+      <label>Enter Number of Full Length Intermediate Sections</label>
+      <input type="number" id="sections" value="15">
+    </div>
+
+    <div class="input-group">
+      <label>Enter Number of Half Length Intermediate Sections</label>
+      <input type="number" id="halfSections" value="1">
+    </div>
+
+    <button class="calculate-btn" onclick="calculatePulses()">
+      Calculate Pulses
+    </button>
+
+    <div class="results">
+
+      <div class="results-title">
+        Results
+      </div>
+
+      <div class="result-box">
+
+        <div class="result-label">
+          Total Inches
+        </div>
+
+        <div class="result-value" id="totalInches">
+          0
+        </div>
+
+      </div>
+
+      <div class="result-box">
+
+        <div class="result-label">
+          Total Pulses
+        </div>
+
+        <div class="result-value" id="totalPulses">
+          0
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="footer">
+    Logistiq Internal Engineering Tool
+  </div>
+
+</div>
+
+<script>
+
+function calculatePulses(){
+
+  const idle =
+    Number(document.getElementById('idle').value);
+
+  const drive =
+    Number(document.getElementById('drive').value);
+
+  const sections =
+    Number(document.getElementById('sections').value);
+
+  const halfSections =
+    Number(document.getElementById('halfSections').value);
+
+  const totalInches =
+    idle +
+    drive +
+    (sections * 96) +
+    (halfSections * 48);
+
+  const totalPulses =
+    totalInches * 2;
+
+  document.getElementById('totalInches').innerText =
+    totalInches;
+
+  document.getElementById('totalPulses').innerText =
+    totalPulses;
+}
+
+calculatePulses();
+
+</script>
+
+</body>
+</html>
